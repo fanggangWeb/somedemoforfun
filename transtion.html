@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>transition</title>
+</head>
+<body>
+  <div class="square">
+    <div class="circle"></div>
+  </div>
+  <style>
+    .square {
+      width: 100px;
+      height: 100px;
+      background: green;
+      transition: width 3s ease-in-out;
+    }
+    .circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 60px;
+      background: silver;
+      transition: height 3s ease-in-out;
+    }
+    .square:hover {
+      width: 200px;
+    }
+    .square:hover .circle {
+      /* width: 160px; */
+      height: 120px;
+    }
+  </style>
+</body>
+</html>

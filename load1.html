@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="content">
+      <div class="container">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+      </div>
+      <div class="circle"></div>
+    </div>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        width: 100%;
+        height: 100%;
+      }
+      .content {
+        position: absolute;
+        left: 44%;
+        top: 45%;
+        width: 68px;
+        height: 68px;
+      }
+      .line {
+        width: 3px;
+        height: 68px;
+        background: silver;
+        position: absolute;
+        left: 34px;
+      }
+      .line:nth-child(2) {
+        transform: rotate(30deg)
+      }
+      .line:nth-child(3) {
+        transform: rotate(60deg)
+      }
+      .line:nth-child(4) {
+        transform: rotate(90deg)
+      }
+      .line:nth-child(5) {
+        transform: rotate(120deg)
+      }
+      .line:nth-child(6) {
+        transform: rotate(150deg)
+      }
+      .circle {
+        position: absolute;
+        width: 34px;
+        height: 34px;
+        left: 17px;
+        top: 17px;
+        background: white;
+        border-radius: 34px; 
+      }
+      .line:before,
+      .line:after {
+        content: '';
+        display: block;
+        height: 50%;
+        background: #999999;
+        border-radius: 5px;
+      }
+      @keyframes light {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 100%;
+        }
+      }
+      .line:nth-child(1):before {
+        animation: light 1.2s linear 0s infinite;
+      }
+      .line:nth-child(2):before {
+        animation: light 1.2s linear 0.1s infinite;
+      }
+      .line:nth-child(3):before {
+        animation: light 1.2s linear 0.2s infinite;
+      }
+      .line:nth-child(4):before {
+        animation: light 1.2s linear 0.3s infinite;
+      }
+      .line:nth-child(5):before {
+        animation: light 1.2s linear 0.4s infinite;
+      }
+      .line:nth-child(6):before {
+        animation: light 1.2s linear 0.5s infinite;
+      }
+      .line:nth-child(1):after {
+        animation: light 1.2s linear 0.6s infinite;
+      }
+      .line:nth-child(2):after {
+        animation: light 1.2s linear 0.7s infinite;
+      }
+      .line:nth-child(3):after {
+        animation: light 1.2s linear 0.8s infinite;
+      }
+      .line:nth-child(4):after {
+        animation: light 1.2s linear 0.9s infinite;
+      }
+      .line:nth-child(5):after {
+        animation: light 1.2s linear 1.0s infinite;
+      }
+      .line:nth-child(6):after {
+        animation: light 1.2s linear 1.1s infinite;
+      }
+    </style>
+  </body>
+</html>
