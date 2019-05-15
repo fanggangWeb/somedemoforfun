@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>手写Promise</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="">
+</head>
+
+<body>
+  <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+  <script>
+    // 第一种
+    // function Promise (executor) {
+    //   let that = this
+    //   this.status = 'pending'
+    //   this.value = undefined
+    //   this.reason = undefined
+    //   this.resolveCallback = []
+    //   this.rejectCallback = []
+    //   function resolve (value) {
+    //     if (that.status == 'pending') {
+    //       that.status = 'resolve'
+    //       that.value = value
+    //       that.resolveCallback.forEach(fn => {
+    //         fn()
+    //       })
+    //     }
+    //   }
+    //   function reject (reason) {
+    //     if (that.status == 'pending') {
+    //       that.status = 'rejected'
+    //       that.reason = reason
+    //       that.rejectCallback.forEach(fn => {
+    //         fn()
+    //       })
+    //     }
+    //   }
+    //   executor(resolve, reject);
+    // }
+    // Promise.prototype.then = function (infulfilled, inrejected) {
+    //   let that = this
+    //   if (this.status == 'resolve') {
+    //     infulfilled(this.value)
+    //   }
+    //   if (this.status == 'rejected') {
+    //     inrejected(this.reason)
+    //   }
+    //   if (this.status == 'pending') {
+    //     this.resolveCallback.push(function () {
+    //       infulfilled(that.value)
+    //     })
+    //     this.rejectCallback.push(function () {
+    //       rejectCallback(that.reason)
+    //     })
+    //   }
+    // }
+    // var p = new Promise((resolve, reject) => {
+    //   setTimeout(() => {
+    //     resolve("xxxx")
+    //   })
+    // })
+    // p.then(res => {
+    //   console.log(res)
+    // })
+    // 第二种
+    // function Qromise (run) {
+    //   var state = 'pending'
+    //     callbacks = []
+    //     rejectcallbacks = []
+    //     value = null
+    //   var that = this
+    //   this.then = function (func) {
+    //     if (state == 'pending') {
+    //       callbacks.push(func)
+    //       return this
+    //     }
+    //   }
+    //   this.catch = function (func) {
+    //     if (state == 'pending') {
+    //       rejectcallbacks.push(func)
+    //     }
+    //   }
+    //   function resolve (newValue) {
+    //     setTimeout (() => {
+    //       callbacks.forEach(fn => {
+    //         fn(newValue)
+    //       })
+    //     })
+    //     state = 'fulfilled'
+    //   }
+    //   function reject (error) {
+    //     setTimeout (() => {
+    //       rejectcallbacks.forEach(fn => {
+    //         fn(error)
+    //       })
+    //     })
+    //     state = 'rejected'
+    //   }
+    //   run(resolve, reject)
+    // }
+    // var p = new Qromise((resolve, reject) => {
+    //   setTimeout(() => {
+    //     resolve('a')
+    //   })
+    // })
+    // var p1 = function () {
+    //   return new Qromise((resolve, reject) => {
+    //     console.log(1)
+    //     resolve('b')
+    // })}
+    // p.then(res => {
+    //   console.log(res)
+    //   return p1()
+    // })
+    function Promise(fn) {
+      var state = 'pending',
+        value = null,
+        callbacks = [];
+
+      this.then = function (onFulfilled, onRejected) {
+        return new Promise(function (resolve, reject) {
+          handle({
+            onFulfilled: onFulfilled || null,
+            onRejected: onRejected || null,
+            resolve: resolve,
+            reject: reject
+          });
+        });
+      };
+
+      function handle(callback) {
+        if (state === 'pending') {
+          callbacks.push(callback);
+          return;
+        }
+        var cb = state === 'fulfilled' ? callback.onFulfilled : callback.onRejected,
+          ret;
+        if (cb === null) {
+          cb = state === 'fulfilled' ? callback.resolve : callback.reject;
+          cb(value);
+          return;
+        }
+        ret = cb(value);
+        callback.resolve(ret);
+      }
+
+      function resolve(newValue) {
+        if (newValue && (typeof newValue === 'object' || typeof newValue === 'function')) {
+          var then = newValue.then;
+          if (typeof then === 'function') {
+            then.call(newValue, resolve, reject);
+            return;
+          }
+        }
+        state = 'fulfilled';
+        value = newValue;
+        execute();
+      }
+      function reject(reason) {
+        state = 'rejected';
+        value = reason;
+        execute();
+      }
+      function execute() {
+        setTimeout(function () {
+          callbacks.forEach(function (callback) {
+            handle(callback);
+          });
+          
+        }, 0);
+      }
+      fn(resolve, reject);
+    }
+    var p = function () {
+      return new Promise((resolve, reject) => {
+        resolve('b')
+    })}
+    p().then(res => {
+      console.log(res)
+    })
+  </script>
+</body>
+
+</html>

@@ -7,14 +7,20 @@
 <body>
  <p>
     <label>请选择一个文件：</label>
+    <div onclick="test()" style="width:60px;height: 80px;background: red;"></div>
     <input type="file" id="imagefile" onchange="readAsDataURL(event)" />
-     <input type="button" value="读取图像" />
+    <input type="button" value="读取图像" />
 </p>
 <div name="result" id="result">
      <!-- 这里用来显示图片结果-->
 </div>
 <img src="" id="showImage" alt="">
 	<script>
+    function test () {
+      var imagefile = document.getElementById("imagefile")
+      // alert(111)
+      imagefile.click()
+    }
 		function readAsDataURL(e) {
             //  if(typeof FileReader=='undifined')          //判断浏览器是否支持filereader
             //  {
@@ -23,6 +29,7 @@
             // }
             // var file=document.getElementById("imagefile").files[0];
             var file = e.target.files[0]
+            console.log(file)
             if(!/image\/\w+/.test(file.type))           //判断获取的是否为图片文件
             {
                 alert("请确保文件为图像文件");
@@ -34,7 +41,7 @@
             {
                // var result=document.getElementById("result");
                // result.innerHTML='<img src="'+this.result+'" alt=""/>'
-               console.log(this)
+              //  console.log(this)
             }
  
         }
