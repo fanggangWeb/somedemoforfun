@@ -1,0 +1,108 @@
+<!-- 滚动优化 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>srcoll and resize</title>
+</head>
+
+<body>
+  <div style="background: green;width: 100%;height: 100000px;"></div>
+  <script>
+    window.onload = function () {
+      // 一 平常的调用方法会导致scroll时间段的频繁触发，如果其中绑定了监听事件，则事件则会高频度的触发
+      // window.addEventListener("scroll", function () {
+      //   console.log(1111111)
+      // }) 
+
+      // 二、防抖 防抖技术即是可以把多个顺序地调用合并成一次。利用定时器的特性，每次结束滚动后的一定时间内 只允许调用一次，小于当前间隔调用，会触发清除定时器。
+      //  500ms 内没有连续触发两次 scroll 事件，那么才会触发我们真正想在 scroll 事件中触发的函数
+      // 防抖简单写法
+      // function debounce (func, interval) {
+      //   var timeout
+      //   return function () {
+      //     clearTimeout(timeout)
+      //     timeout = setTimeout(func, interval);
+      //   }
+
+      // }
+      // function scollTest () {
+      //   console.log(2222)
+      // }
+      // window.addEventListener("scroll", debounce(scollTest, 500))
+
+      // 防抖升级版
+      // function debounce(func, wait, immediate) {
+      //   var timeout;
+      //   return function () {
+      //     var context = this, args = arguments;
+      //     var later = function () {
+      //       timeout = null;
+      //       if (!immediate) {
+      //         func.apply(context, args);
+      //       }
+      //     };
+      //     var callNow = immediate && !timeout;
+
+      //     clearTimeout(timeout);
+
+      //     timeout = setTimeout(later, wait);
+      //     if (callNow) {
+      //       func.apply(context, args);
+      //     }
+      //   };
+      // };
+      // var myEfficientFn = debounce(function () {
+      //   console.log("sssss")
+      // }, 250);
+      // window.addEventListener('scroll', myEfficientFn);
+      // 三 、节流 节流函数，只允许一个函数在 X 毫秒内执行一次
+      // function throttle (func, wait, mustRun) {
+      //   var timeout, startTime = new Date()
+      //   return function () {
+      //     var context = this, args = arguments
+      //     var curTime = new Date()
+      //     clearTimeout(timeout)
+      //     if (curTime - startTime >= mustRun) {
+      //       func.apply(this,args)
+      //       startTime = curTime
+      //     } else {
+      //       timeout = setTimeout(func, wait);
+      //     }
+      //   }
+      // }
+      // function realFunc () {
+      //   console.log("success")
+      // }
+      // window.addEventListener("scroll",throttle(realFunc,500,1000))
+
+      // 四、使用 rAF（requestAnimationFrame）触发滚动事件
+      // window.requestAnimationFrame() 这个方法是用来在页面重绘之前，通知浏览器调用一个指定的函数。这个方法接受一个函数为参，该函数会在重绘前调用。
+      var rafLock = false
+      function onScorll () {
+        if (!rafLock) {
+          requestAnimationFrame(realFunc)
+          rafLock = true
+        }
+      }
+      function realFunc () {
+        rafLock = false
+        console.log(111111)
+      }
+      window.addEventListener("scroll", realFunc, false) 
+      // 第三个参数 useCapture
+      // 可选。布尔值，指定事件是否在捕获或冒泡阶段执行。
+      // 可能值:
+      // true - 事件句柄在捕获阶段执行
+      // false- false- 默认。事件句柄在冒泡阶段执行
+
+      // 五、简化 scroll 内的操作 （避免在scroll 事件中修改样式属性 / 将样式操作从 scroll 事件中剥离）
+      // 六、滑动过程中尝试使用 pointer-events: none 禁止鼠标事件
+    }
+  </script>
+</body>
+
+</html>
