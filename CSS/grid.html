@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>grid</title>
+</head>
+<body>
+  <span>foo</span>
+  <div class="grid-con">
+    <div class="item">1</div>
+    <div class="item">2</div>
+    <div class="item">3</div>
+    <div class="item">4</div>
+    <div class="item">5</div>
+    <div class="item">6</div>
+    <div class="item">7</div>
+    <div class="item">8</div>
+    <div class="item">9</div>
+  </div>
+  <span>bar</span>
+</body>
+<style>
+  .grid-con {
+    display: grid;
+    width: 100%;
+    /* grid-template-columns: 100px 100px 100px;
+    grid-template-rows: 100px 100px 100px; */
+    /* grid-template-columns: repeat(3, 100px); */
+    /* grid-template-columns: repeat(auto-fill, 400px 200px 200px); */
+    /* grid-template-columns: 150px 1fr 2fr;
+    grid-template-rows: repeat(4, 100px); */
+    grid-template-columns: [c1] 100px [c2] 100px [c3] 300px [c4];
+    grid-template-rows: [r1] 100px [r2] 100px [r3] 300px [r4];
+  }
+  .item {
+    /* width: 200px;
+    height: 200px; */
+    background: wheat;
+    border: 2px solid green;
+  }
+</style>
+</html>
