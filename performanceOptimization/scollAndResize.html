@@ -60,39 +60,40 @@
       // }, 250);
       // window.addEventListener('scroll', myEfficientFn);
       // 三 、节流 节流函数，只允许一个函数在 X 毫秒内执行一次
-      // function throttle (func, wait, mustRun) {
-      //   var timeout, startTime = new Date()
-      //   return function () {
-      //     var context = this, args = arguments
-      //     var curTime = new Date()
-      //     clearTimeout(timeout)
-      //     if (curTime - startTime >= mustRun) {
-      //       func.apply(this,args)
-      //       startTime = curTime
-      //     } else {
-      //       timeout = setTimeout(func, wait);
-      //     }
-      //   }
-      // }
-      // function realFunc () {
-      //   console.log("success")
-      // }
-      // window.addEventListener("scroll",throttle(realFunc,500,1000))
-
-      // 四、使用 rAF（requestAnimationFrame）触发滚动事件
-      // window.requestAnimationFrame() 这个方法是用来在页面重绘之前，通知浏览器调用一个指定的函数。这个方法接受一个函数为参，该函数会在重绘前调用。
-      var rafLock = false
-      function onScorll () {
-        if (!rafLock) {
-          requestAnimationFrame(realFunc)
-          rafLock = true
+      function throttle (func, wait, mustRun) {
+        var timeout, startTime = new Date()
+        return function () {
+          var context = this, args = arguments
+          var curTime = new Date()
+          clearTimeout(timeout)
+          if (curTime - startTime >= mustRun) {
+            // console.log(args)
+            func.apply(this,args)
+            startTime = curTime
+          } else {
+            timeout = setTimeout(func, wait);
+          }
         }
       }
       function realFunc () {
-        rafLock = false
-        console.log(111111)
+        console.log("success")
       }
-      window.addEventListener("scroll", realFunc, false) 
+      window.addEventListener("scroll",throttle(realFunc,1000,1000))
+
+      // 四、使用 rAF（requestAnimationFrame）触发滚动事件
+      // window.requestAnimationFrame() 这个方法是用来在页面重绘之前，通知浏览器调用一个指定的函数。这个方法接受一个函数为参，该函数会在重绘前调用。
+      // var rafLock = false
+      // function onScorll () {
+      //   if (!rafLock) {
+      //     requestAnimationFrame(realFunc)
+      //     rafLock = true
+      //   }
+      // }
+      // function realFunc () {
+      //   rafLock = false
+      //   console.log(111111)
+      // }
+      // window.addEventListener("scroll", realFunc, false) 
       // 第三个参数 useCapture
       // 可选。布尔值，指定事件是否在捕获或冒泡阶段执行。
       // 可能值:
